@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор отпускных</title>
+</head>
+<body>
+<h1>Расчет суммы отпускных</h1>
+<form>
+    <label for="avgMonthSalary">Среднемесячная заработная плата:</label>
+    <input type="text" id="avgMonthSalary" name="avgMonthSalary" min="0" title="Только неотрицательные числа"
+           oninput="validateSalaryInput(this);"><br><br>
+
+    <label for="vacationDays">Количество дней отпуска:</label>
+    <input type="number" id="vacationDays" name="vacationDays" min="0" title="Только целые неотрицательные числа"
+           oninput="validateVacationDaysInput(this);"><br><br>
+
+    <label for="startDate">Дата начала отпуска:</label>
+    <input type="date" id="startDate" name="startDate"><br><br>
+
+    <label for="endDate">Дата окончания отпуска:</label>
+    <input type="date" id="endDate" name="endDate"><br><br>
+
+    <button id="calculate">Рассчитать</button>
+    <p id="result"></p>
+</form>
+<script src="script.js"></script>
+</body>
+</html>
