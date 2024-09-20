@@ -2,27 +2,21 @@ package com.practice.holiday_pay_calculator.service;
 
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CalculatorService {
-    private final List<LocalDate> holidays = Arrays.asList(
-            LocalDate.of(2024, 1, 1),
-            LocalDate.of(2024, 1, 2),
-            LocalDate.of(2024, 1, 7),
-            LocalDate.of(2024, 2, 23),
-            LocalDate.of(2024, 3, 8),
-            LocalDate.of(2024, 5, 1),
-            LocalDate.of(2024, 5, 9),
-            LocalDate.of(2024, 6, 12),
-            LocalDate.of(2024, 11, 4)
-    );
+    private final List<LocalDate> holidays = getDataFromCsv("src/main/resources/holidays.csv");
 
     public double getVacationPay(double avgMonthSalary, long vacationDays, LocalDate startDate, LocalDate endDate) {
-       if (avgMonthSalary < 0 || vacationDays < 0) {
+        if (avgMonthSalary < 0 || vacationDays < 0) {
             throw new IllegalArgumentException("Value cannot be negative.");
         }
 
@@ -62,5 +56,19 @@ public class CalculatorService {
     private double calculatePay(double avgMonthSalary, long vacationDays) {
         double avgHolidayPayPerDay = avgMonthSalary / 29.3;
         return Math.round((avgHolidayPayPerDay * vacationDays) * 100.0) / 100.0;
+    }
+
+    private List<LocalDate> getDataFromCsv(String filePath) {
+        List<LocalDate> list  = new ArrayList<>();
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            for (String line : lines) {
+                LocalDate date = LocalDate.parse(line);
+                list.add(date);
+            }
+        } catch (IOException | DateTimeParseException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }
