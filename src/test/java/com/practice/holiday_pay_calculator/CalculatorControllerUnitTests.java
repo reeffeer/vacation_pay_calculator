@@ -8,6 +8,7 @@ import com.practice.holiday_pay_calculator.service.CalculatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
@@ -52,9 +53,7 @@ public class CalculatorControllerUnitTests {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "1000, 10, 341.30"
-    })
+    @CsvFileSource(resources = "/testCalculateVacationPay.csv")
     void testCalculateVacationPay(double averageMonthlySalary, long vacationDays, double expectedResult) throws Exception {
         Vacation vacation = new Vacation(averageMonthlySalary, vacationDays, null, null);
         when(calculatorService.getVacationPay(averageMonthlySalary, vacationDays, null, null)).thenReturn(expectedResult);
@@ -95,12 +94,7 @@ public class CalculatorControllerUnitTests {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "45.7rD, 10",
-            "1, wer6",
-            "?!-, 1",
-            "abc, efg!"
-    })
+    @CsvFileSource(resources = "/testCalculateHolidayPayNaNValues.csv")
     void testCalculateHolidayPayNaNValues(String salary, String days) throws Exception {
         String requestBody = String.format("{\"averageMonthlySalary\": \"%s\", \"vacationDays\": \"%s\"}", salary, days);
 

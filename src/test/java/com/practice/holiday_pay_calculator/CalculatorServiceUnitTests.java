@@ -4,6 +4,7 @@ import com.practice.holiday_pay_calculator.service.CalculatorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
@@ -23,17 +24,7 @@ public class CalculatorServiceUnitTests {
     }
 
     @ParameterizedTest
-    @CsvSource({
-            "0, 10, 0",
-            "1, 0, 0",
-            "0.1, 1, 0",
-            "1, 1, 0.03",
-            "1000, 10, 341.30",
-            "2000, 20, 1365.19",
-            "2555.49, 28, 2442.11",
-            "3000, 30, 3071.67",
-            "9999.99, 365, 124573.25"
-    })
+    @CsvFileSource(resources = "/testGetHolidayPay.csv")
     void testGetHolidayPay(double avgMonthSalary, int vacationDays, double expectedHolidayPay) {
         when(calculatorService.getVacationPay(avgMonthSalary, vacationDays, null, null)).thenReturn(expectedHolidayPay);
         double holidayPay = calculatorService.getVacationPay(avgMonthSalary, vacationDays, null, null);
